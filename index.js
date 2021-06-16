@@ -53,14 +53,14 @@ Use the higher-order function called getYears to do the following:
 2. Receive a callback function getFinals from task 2 
 3. Return an array called years containing all of the years in the getFinals data set*/
 
-function getYears(getfinalsCB) {
-    const years = getfinalsCB.map(function(item){
+function getYears(fifa, finalsCB) {
+    const years = finalsCB(fifa).map(function(item){
         return item.Year;
     });
     return years;
 }
 
-console.log('Task 3',getYears(getFinals(fifaData)));
+console.log('Task 3',getYears(fifaData, getFinals));
 
 
 /* 🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀 Task 4: 🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀
@@ -70,20 +70,20 @@ Use the higher-order function getWinners to do the following:
 3. Determines the winner (home or away) of each `finals` game. 
 4. Returns the names of all winning countries in an array called `winners` */ 
 
-function getWinners(getfinalsCB) {
-    const winners = getfinalsCB.map(function(item){
+function getWinners(fifa, finalsCB) {
+    const winners = finalsCB(fifa).map(function(item){
         if(item['Home Team Goals'] > item['Away Team Goals']){
             return item['Home Team Name'];
         }
         else if(item['Home Team Goals'] < item['Away Team Goals']){
-            return item['Away Team Goals'];
+            return item['Away Team Name'];
         };
         return winners;
     });
     return winners;
 }
 
-console.log('Task 4', getWinners(getFinals(fifaData)));
+console.log('Task 4', getWinners(fifaData, getFinals));
 
 
 
@@ -97,10 +97,20 @@ Use the higher-order function getWinnersByYear to do the following:
 hint: the strings returned need to exactly match the string in step 4.
  */
 
-function getWinnersByYear(/* code here */) {
-    /* code here */
+function getWinnersByYear(fifa, yearsCB, winnersCB) {
+    const winnerString = [];
+
+    const years = yearsCB(fifa, getFinals);
+    const winners = winnersCB(fifa, getFinals);
+
+    winners.forEach(function(item, index){
+            return winnerString.push(`In ${years[index]}, ${winners[index]} won the world cup!`);
+    });
+
+    return winnerString;
 }
 
+console.log('Task 5', getWinnersByYear(fifaData, getYears, getWinners));
 
 
 /* 🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀 Task 6: 🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀
